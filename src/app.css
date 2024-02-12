@@ -15,7 +15,7 @@
 }
 
 .display-lg {
-    @apply text-8xl;
+    @apply text-8xl leading-[1.1];
 }
 
 .display-md {
@@ -24,6 +24,34 @@
 
 .display-lg.bold, .display-md.bold, .display-sm.bold {
     @apply font-extrabold;
+}
+
+.heading-2xl {
+    @apply text-4xl;
+}
+
+.heading-xl {
+    @apply text-3xl;
+}
+
+.heading-lg {
+    @apply text-2xl;
+}
+
+.heading-md {
+    @apply text-xl;
+}
+
+.heading-sm {
+    @apply text-lg;
+}
+
+.heading-xs {
+    @apply text-base;
+}
+
+.heading-2xl.bold, .heading-xl.bold, .heading-lg.bold, .heading-md.bold, .heading-sm.bold, .heading-xs.bold {
+    @apply font-bold;
 }
 
 .center {
