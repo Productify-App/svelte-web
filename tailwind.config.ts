@@ -7,6 +7,10 @@ export default {
 	content: ['./src/**/*.{html,js,svelte,ts}'],
 	theme: {
 		extend: {
+			boxShadow: {
+				glow: '0px 4px 20px 1px rgb(0 0 0 / 0.05)',
+				'glow-lg': '0px 4px 35px 1px rgb(0 0 0 / 0.05)',
+			},
 			colors: {
 				primary: {
 					1: '#E5EEFF',

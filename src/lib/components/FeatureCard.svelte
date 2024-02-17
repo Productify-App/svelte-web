@@ -1,8 +1,8 @@
 <script lang="ts">
-    import {ArrowRight, Icon} from "svelte-hero-icons";
+    import {ArrowRight, Icon, type IconSource} from "svelte-hero-icons";
     export let title: string;
     export let description: string;
-    export let icon: string = ArrowRight;
+    export let icon: IconSource = ArrowRight;
 </script>
 
 <div class="p-12 flex flex-col items-center bg-accent-1 border border-accent-4 rounded-xl shadow-xl shadow-accent-2">
