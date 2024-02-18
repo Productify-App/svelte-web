@@ -14,29 +14,23 @@ export const load = async ({}) => {
             tags: ['product', 'management', 'strategy']
         },
         {
-            title: 'Data Scientist',
+            title: 'Marketing Manager',
             location: 'San Francisco',
             id: '3',
-            tags: ['data', 'science', 'python']
+            tags: ['marketing', 'strategy', 'growth']
         },
         {
-            title: 'Software Engineer',
+            title: 'Sales Manager',
             location: 'New York',
             id: '4',
-            tags: ['react', 'node', 'typescript']
+            tags: ['sales', 'growth', 'strategy']
         },
         {
-            title: 'Product Manager',
+            title: 'UI/UX Designer',
             location: 'San Francisco',
             id: '5',
-            tags: ['product', 'management', 'strategy']
-        },
-        {
-            title: 'Data Scientist',
-            location: 'New York',
-            id: '6',
-            tags: ['data', 'science', 'python']
-        },
+            tags: ['design', 'UI', 'UX']
+        }
     ];
 
     return {

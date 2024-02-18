@@ -7,6 +7,7 @@
 
 html, body {
     overflow-x: hidden;
+    scroll-behavior: smooth;
 }
 
 :root {
@@ -20,15 +21,15 @@ html, body {
 }
 
 .display-lg {
-    @apply text-8xl leading-[1.1];
+    @apply text-8xl leading-[1.1] font-bold;
 }
 
 .display-md {
-    @apply text-7xl;
+    @apply text-7xl leading-[1.0] font-bold;
 }
 
 .display-sm {
-    @apply text-5xl;
+    @apply text-5xl font-bold;
 }
 
 .display-lg.bold, .display-md.bold, .display-sm.bold {

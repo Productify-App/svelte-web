@@ -6,17 +6,23 @@
 
     export let darkMode = false;
     export let absolute = false;
+    export let monochrome = false;
 
     let active = null;
 
     onMount(() => {
-        active = window.location.pathname;
+        setLink(window.location.pathname);
         console.log(window.location.pathname);
     });
 
     function redirected(link) {
-        active = link;
+        setLink(link);
         goto(link);
+    }
+
+    function setLink(link) {
+        active = link;
+        monochrome = link === "/jobs";
     }
 
     let links = [
@@ -27,7 +33,7 @@
 
 <nav class:absolute class="w-screen">
     <div class="px-8 flex items-center w-screen justify-between h-20 max-w-screen-xl mx-auto">
-        <Logo />
+        <Logo on:click={() => redirected("/")} />
         <div class="flex gap-4">
             {#each links as link}
                 <a href="{link.link}"
@@ -39,6 +45,6 @@
                 </a>
             {/each}
         </div>
-        <Button label="Submit an application" link="/application/submit" />
+        <Button label="Submit an application" class={darkMode ? "dark" : ""} color={monochrome ? "white" : "primary"} link="/application/submit" />
     </div>
 </nav>

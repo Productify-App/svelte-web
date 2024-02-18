@@ -8,8 +8,8 @@ import Logo from "$lib/components/Logo.svelte";
         <path opacity="0.5" d="M0 91V79.0107C18.72 63.0023 39.8016 47.8812 68.6736 36.3621C143.15 6.62025 237.6 6.825 323.395 21.5518C368.251 29.2489 409.925 41.3216 452.52 51.7335C511.445 66.1418 574.531 86.6168 640.915 89.3999C693.13 91.5612 743.011 82.2564 782.899 65.4669C828.648 46.2128 872.64 18.4502 932.126 10.1086C990.36 1.92617 1049.27 15.1818 1103.67 28.5209C1158.08 41.86 1211.9 58.0959 1272.04 61.1672C1358.05 65.6034 1435.16 43.8165 1515.25 31.7135C1558.74 25.1463 1600.21 27.0346 1640.66 37.401C1672.96 45.6593 1709.78 57.8229 1728 74.7413V91H0Z" fill="#1E1E2F"/>
         <path d="M0 91V86.7306C215.899 46.2583 452.29 36.9157 685.195 58.7178C747.115 64.5114 806.486 73.9754 868.954 78.7832C953.914 85.3277 1030.92 69.5013 1107.36 51.9383C1192.22 32.4415 1275.84 18.7763 1369.73 22.75C1494.33 28.0583 1618.07 57.4134 1728 87.0642V91H0Z" fill="#1E1E2F"/>
     </svg>
-    <div class="flex max-w-screen-xl mx-auto justify-between items-center h-full mt-[7vh]">
+    <div class="flex max-w-screen-xl mx-auto justify-between items-center h-full">
         <Logo />
-        <p class="text-sm text-surface-7 font-normal">Made by Thomas Huang and Trevor Daly for FBLA Website Programming and Design 2024</p>
+        <p class="text-sm text-surface-5 font-normal">Made by Thomas Huang and Trevor Daly for FBLA Website Coding and Development 2024</p>
     </div>
 </footer>
