@@ -1,6 +1,13 @@
 export type job = {
     title: string;
-    location: string;
-    id: string;
+    locations: string[];
     tags: string[];
+    id: string;
+
+    overview: string;
+    expectations: string;
+    requirements: string[];
+}
+
+export class type {
 }

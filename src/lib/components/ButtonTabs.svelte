@@ -16,8 +16,8 @@
     }
 </script>
 
-<div class={`flex gap-4 ${className}`}>
+<div class={`flex gap-2 ${className}`}>
     {#each tabs as tabLabel, i}
-        <Button label={tabLabel} outlined={tab !== i} color={tab === i ? "primary" : "surface"} on:click={() => handleClick(i)} />
+        <Button size="sm" label={tabLabel} outlined={tab !== i} color={tab === i ? "primary" : "surface"} on:click={() => handleClick(i)} />
     {/each}
 </div>

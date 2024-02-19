@@ -1,7 +1,6 @@
 <script lang="ts">
     import Saos from "saos";
 
-    import Navbar from "$lib/components/Navbar.svelte";
     import Footer from "$lib/components/Footer.svelte";
     import Button from "$lib/components/Button.svelte";
     import FeatureCard from "./FeatureCard.svelte";
@@ -72,7 +71,7 @@
 
     @keyframes -global-slide-up {
         0% {
-            transform: translateY(2vh);
+            transform: translateY(20px);
             opacity: 0;
         }
         100% {
@@ -83,7 +82,18 @@
 
     @keyframes -global-slide-up-big {
         0% {
-            transform: translateY(10vh);
+            transform: translateY(60px);
+            opacity: 0;
+        }
+        100% {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    @keyframes -global-slide-up-small {
+        0% {
+            transform: translateY(10px);
             opacity: 0;
         }
         100% {
@@ -119,29 +129,26 @@
     }
 </style>
 
-<!--<Navbar absolute />-->
 <section style="background-image: url({mountainPic}); background-position: center; background-size: cover; width: 100vw;" class="-z-20 max-h-[800px] pt-20">
     <div class="max-w-screen-xl px-8 pb-16 mx-auto gap-24 mt-20">
         <div class="flex flex-col gap-4 shrink w-1/2">
-            <h1 class="display-lg bold z-30 text-white">
-                More than<br />
-                <span class="display-lg bold text-accent-5 relative">
-                just<svg class="absolute inline-block top-1/2 left-1/2 center fill-accent-5 opacity-15" width="260" height="160" viewBox="0 0 319 220" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="0.984131" y="26.5806" width="301.435" height="194" transform="rotate(-4.98785 0.984131 26.5806)" />
-                    </svg>
-                </span>
-                a challenge...
-            </h1>
+            <Saos once={true} animation={"slide-up-small 1s cubic-bezier(0.55, 0, 0.1, 1) both"}>
+                <h1 class="display-lg bold z-30 text-white">
+                    More than<br />
+                    <span class="display-lg bold text-accent-5 relative">
+                    just<svg class="absolute inline-block top-1/2 left-1/2 center fill-accent-5 opacity-15" width="260" height="160" viewBox="0 0 319 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="0.984131" y="26.5806" width="301.435" height="194" transform="rotate(-4.98785 0.984131 26.5806)" />
+                        </svg>
+                    </span>
+                    a challenge...
+                </h1>
+            </Saos>
             <p class="text-surface-2 my-6 mr-24 font-medium">
                 Welcome to Productify, a company dedicated to improving the lives of others by making productivity as easy as possible. Make a difference. Change lives. <strong>We’re hiring!</strong>
             </p>
             <div class="flex gap-4">
-                <Saos once={true} animation={"slide-up 1s cubic-bezier(0.55, 0, 0.1, 1) both 0.3s"}>
-                    <Button label="Learn more" color="surface" size="lg" link="#about" />
-                </Saos>
-                <Saos once={true} animation={"slide-up 1s cubic-bezier(0.55, 0, 0.1, 1) both 0.6s"}>
-                    <Button label="Apply now" class="glowing" size="lg" link="#" rightIcon={ArrowRight} />
-                </Saos>
+                <Button label="Learn more" color="surface" size="lg" link="#about" />
+                <Button label="Apply now" class="glowing" size="lg" link="/jobs/listings" rightIcon={ArrowRight} />
             </div>
         </div>
     </div>
@@ -156,14 +163,14 @@
         {#each [1,3] as i}
             <div class="sliding-cards">
                 {#each data.jobs as job}
-                    <ScrollingJobCard title={job.title} tags={job.tags} location={job.location} id={job.id} />
+                    <ScrollingJobCard title={job.title} tags={job.tags} locations={job.locations} id={job.id} />
                 {/each}
             </div>
         {/each}
     </div>
     <div class="mx-auto w-min mt-12">
-        <Saos once={true} animation={"slide-up 1s cubic-bezier(0.55, 0, 0.1, 1) both 0.25s"}>
-            <Button label="View all positions" color="surface" size="lg" link="#" class="dark glowing" rightIcon={ArrowRight} />
+        <Saos once={true} animation={"slide-up 1s cubic-bezier(0.55, 0, 0.1, 1) both"}>
+            <Button label="View all positions" color="surface" size="lg" link="/jobs#listings" class="dark glowing" rightIcon={ArrowRight} />
         </Saos>
     </div>
 </section>
@@ -181,7 +188,7 @@
                     </span>
                     we do?</h1>
             </Saos>
-            <Saos once={true} animation={"slide-up 1s cubic-bezier(0.55, 0, 0.1, 1) both 0.5s"}>
+            <Saos once={true} animation={"slide-up 1s cubic-bezier(0.55, 0, 0.1, 1) both 0.2s"}>
                 <p class="mt-6 text-surface-8">
                     Productify is a productivity app that allows users to manage their tasks through a simple interface. Productify allows friends to share their task with each other and uses positive peer pressure to encourage improvement.
                 </p>
@@ -219,7 +226,7 @@
                         </svg>
                     </span></h1>
             </Saos>
-            <Saos once={true} animation={"slide-up 1s cubic-bezier(0.55, 0, 0.1, 1) both 0.5s"}>
+            <Saos once={true} animation={"slide-up 1s cubic-bezier(0.55, 0, 0.1, 1) both 0.2s"}>
                 <p class="mt-6 font-medium text-surface-8">
                     Productify is a productivity app that allows users to manage their tasks through a simple interface. Productify allows friends to share their task with each other and uses positive peer pressure to encourage improvement.
                 </p>
@@ -228,11 +235,11 @@
     </div>
     <img src={todolist} alt="iPhone" class="w-[40vw] object-contain ml-16" />
 </section>
-<Benefits />
+<Benefits blue />
 <section class="pt-36 pb-[24vh] max-w-screen-xl mx-auto">
     <h1 class="display-md bold w-full text-center text-surface-10">Ready to get started?</h1>
-    <Saos once={true} animation={"slide-up 1s cubic-bezier(0.55, 0, 0.1, 1) both 0.5s"}>
-        <Button class="glowing w-min mx-auto mt-24" color="accent" label="Join the team" size="lg" link="#" rightIcon={ArrowRight} />
+    <Saos once={true} animation={"slide-up 1s cubic-bezier(0.55, 0, 0.1, 1) both"}>
+        <Button class="glowing w-min mx-auto mt-24" color="accent" label="Join the team" size="lg" link="/jobs#top" rightIcon={ArrowRight} />
     </Saos>
 </section>
 <Footer />

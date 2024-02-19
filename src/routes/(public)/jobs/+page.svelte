@@ -1,23 +1,25 @@
 <script lang="ts">
-    import Navbar from "$lib/components/Navbar.svelte";
-    import mountainPic from "$lib/deliciousmountain.png";
-    import {ArrowRight} from "svelte-hero-icons";
     import Saos from "saos";
     import Button from "$lib/components/Button.svelte";
     import Benefits from "$lib/components/Benefits.svelte";
     import Footer from "$lib/components/Footer.svelte";
     import JobListings from "./JobListings.svelte";
+    import { type job } from "$lib/types";
+
+    export let data: {
+        jobs: job[];
+    };
 </script>
 
-<section class="-z-20 max-h-[800px] pt-20 bg-primary-5">
-    <div class="max-w-screen-xl px-8 pb-16 mx-auto gap-24 pt-20">
+<section id="top" class="-z-20 max-h-[800px] pt-20 bg-primary-5">
+    <div class="max-w-screen-xl px-8 pb-8 mx-auto gap-24 pt-20">
         <div class="flex flex-col gap-4 shrink">
             <h1 class="display-lg z-30 text-white w-3/5 mx-auto text-center">
                 Find what works for <span class="display-lg bold text-white relative before:bg-white before:bg-opacity-10 before:-rotate-6 before:z-[-1] before:absolute before:inset-0 before:transform before:scale-x-110">you</span>
             </h1>
             <div class="flex gap-4 justify-center mt-16">
-                <Saos once={true} animation={"slide-up 1s cubic-bezier(0.55, 0, 0.1, 1) both 0.3s"}>
-                    <Button label="See available positions" color="white" size="lg" link="#about" />
+                <Saos once={true} animation={"slide-up 1s cubic-bezier(0.55, 0, 0.1, 1) both"}>
+                    <Button label="See available positions" color="white" size="lg" link="#listings" />
                 </Saos>
             </div>
         </div>
@@ -28,6 +30,6 @@
         <path d="M0 0V5.63C215.899 59 452.29 71.32 685.195 42.57C747.115 34.93 806.486 22.45 868.954 16.11C953.914 7.48 1030.92 28.35 1107.36 51.51C1192.22 77.22 1275.84 95.24 1369.73 90C1494.33 83 1618.07 44.29 1728 5.19V0H0Z" fill="#1A66FF"/>
     </svg>
 </section>
-<JobListings />
+<JobListings jobs={data.jobs} />
 <Benefits class="pb-[16vh]" />
 <Footer />

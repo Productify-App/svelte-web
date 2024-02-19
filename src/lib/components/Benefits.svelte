@@ -1,6 +1,6 @@
 <script lang="ts">
     import Saos from "saos";
-    import FeatureCard from "../../routes/FeatureCard.svelte";
+    import FeatureCard from "../../routes/(public)/FeatureCard.svelte";
     import {Bolt, ComputerDesktop, Icon} from "svelte-hero-icons";
     export let blue = false;
     let className = "";
@@ -52,7 +52,7 @@
         <div class="absolute blurbox bg-primary-2 right -z-10" />
         <div class="max-w-screen-xl px-8 py-32 mx-auto z-10">
             <Saos once={true} animation={"slide-up 1s cubic-bezier(0.55, 0, 0.1, 1) both"}>
-                <h1 class="heading-2xl bold text-accent-10 w-1/2 text-center mx-auto">
+                <h1 class="heading-2xl bold text-primary-10 w-1/2 text-center mx-auto">
                     Why work for Productify?
                 </h1>
             </Saos>

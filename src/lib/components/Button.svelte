@@ -1,5 +1,6 @@
 <script lang="ts">
     import {Icon, type IconSource} from "svelte-hero-icons";
+    import DynamicButton from "$lib/components/DynamicButton.svelte";
 
     export let label = "Hello World";
     export let link = "";
@@ -78,8 +79,8 @@
     }
 </style>
 
-{#if link}
-    <a href={link} on:click tabindex={notab ? "-1" : undefined} class:outlined class={`button ${color} ${size} ${className}`}>
+<DynamicButton href={link} on:click tabindex={notab ? "-1" : undefined}>
+   <div class:outlined class={`button ${color} ${size} ${className}`}>
         {#if leftIcon}
             <Icon src="{leftIcon}" class="w-5 h-5 stroke-2" />
         {/if}
@@ -87,15 +88,5 @@
         {#if rightIcon}
             <Icon src="{rightIcon}" class="w-5 h-5 stroke-2" />
         {/if}
-    </a>
-{:else}
-    <button on:click tabindex={notab ? "-1" : undefined} class:outlined class={`button ${color} ${size} ${className}`}>
-        {#if leftIcon}
-            <Icon src="{leftIcon}" class="w-5 h-5 stroke-2" />
-        {/if}
-        {label}
-        {#if rightIcon}
-            <Icon src="{rightIcon}" class="w-5 h-5 stroke-2" />
-        {/if}
-    </button>
-{/if}
+   </div>
+</DynamicButton>
