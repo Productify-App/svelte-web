@@ -1,216 +1,250 @@
 <script lang="ts">
-    import {createEventDispatcher, onMount} from 'svelte';
-    import {Check, UploadIcon} from "lucide-svelte";
+	import { createEventDispatcher, onMount } from 'svelte';
+	import { Check, PlusIcon, UploadIcon } from 'lucide-svelte';
+	import { scale } from 'svelte/transition';
+	import { cubicOut } from 'svelte/easing';
+	import { BinarySize, dragAndDropFiles, ellipsisInTheMiddle } from '$lib/utils';
 
-    const dispatch = createEventDispatcher();
+	const dispatch = createEventDispatcher();
 
-    export { typeValue as type };
-    export let multiple = false;
-    export let files: File[] = [];
-    export let maxsize: number = 10;
-    export let length = 0;
-    export let value = null;
-    export let label = '';
-    export let accept = '';
-    export let subtext = '';
-    export let required = false;
-    export let validation = (value: File[]) => true;
-    export let transform = (value: File[]) => value;
-    export let valid = true;
-    export let invalid = false;
-    export let error = '';
-    export let focus = false;
+	export { typeValue as type };
+	export let multiple = false;
+	export let files: File[] = [];
+	export let length = 0;
+	export let value = null;
+	export let label = '';
+	export let accept = '';
+	export let subtext = '';
+	export let required = false;
+	export let valid = true;
+	export let invalid = false;
+	export let error = '';
+	export let focus = false;
 
-    let dragover = false;
-    let unfilteredFiles: File[] | null = files;
-    let isDragAndDropSupported = false;
+	export let transform = multiple ? (value: File[]) => value : (value: File) => value;
 
-    $: invalid = !valid;
+	let dragover = false;
+	let unfilteredFiles: File[] | null = files;
+	let isDragAndDropSupported = false;
+	let input: HTMLInputElement | null = null;
+	let dragOverArea: HTMLElement | null = null;
 
-    $: {
-        if (focus) {
-            dispatch('focus', { value: files });
-        } else {
-            dispatch('blur', { value: files });
-        }
-    }
+	$: {
+		if (focus) {
+			dispatch('focus', { value: files });
+		} else {
+			dispatch('blur', { value: files });
+		}
+	}
 
-    $: {
-        try {
-            if (multiple) {
-                files = transform(unfilteredFiles);
-            } else {
-                files = [transform(unfilteredFiles[0])];
-            }
-            error = '';
-            valid = true;
-        } catch (e) {
-            if (unfilteredFiles?.length) {
-                // buffer array remove last element
-                unfilteredFiles = [];
-                files = [];
-                valid = false;
-                error = e.message;
-            }
-        }
-    }
+	$: transformUnfilteredFiles(unfilteredFiles);
 
-    $: if (!multiple) value = files.length ? files[0] : null;
+	$: if (!multiple) value = files.length ? files[0] : null;
 
-    $: { unfilteredFiles; onChange(); }
-    $: { invalid; onInvalid(); }
+	$: {
+		unfilteredFiles;
+		onChange();
+	}
 
-    function onInvalid() {
-        if (invalid) {
-            dispatch('invalid', { value: unfilteredFiles });
-        }
-    }
+	$: {
+		valid;
+		onInvalid();
+	}
 
-    function onChange() {
-        if (multiple && unfilteredFiles.length ) {
-            dispatch('change', { value: unfilteredFiles });
-        } else if (unfilteredFiles.length) {
-            dispatch('change', { value: unfilteredFiles[0] });
-        } else {
-            dispatch('change', { value: null });
-        }
-    }
+	// events
+	function onInvalid(e: InputEvent) {
+		if (!valid) {
+			dispatch('invalid', e);
+		}
+	}
 
-    let input: HTMLInputElement | null = null;
-    let dragOverArea: HTMLDivElement | null = null;
+	function onChange() {
+		if (multiple && unfilteredFiles.length) {
+			dispatch('change', { value: unfilteredFiles });
+		} else if (unfilteredFiles.length) {
+			dispatch('change', { value: unfilteredFiles[0] });
+		} else {
+			dispatch('change', { value: null });
+		}
+	}
 
-    function byteSizeToString(size: number) {
-        const i = Math.floor(Math.log(size) / Math.log(1024));
-        return (size / Math.pow(1024, i)).toFixed(1) + ' ' + ['B', 'KB', 'MB', 'GB', 'TB'][i];
-    }
+	function onInput(e: InputEvent) {
+		checkValidity();
 
-    onMount(() => {
-        isDragAndDropSupported = 'draggable' in document.createElement('div') &&
-                                 'ondragstart' in document.createElement('div') &&
-                                 'ondrop' in document.createElement('div');
+		if (valid) {
+			dispatch('input', e);
+		}
+	}
 
-        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-            dragOverArea.addEventListener(eventName, preventDefaults, false);
-        });
+	// transform
+	function transformUnfilteredFiles(unfilteredFiles: File[]) {
+		try {
+			if (multiple) {
+				files = transform(unfilteredFiles);
+			} else if (unfilteredFiles?.length) {
+				files = [transform(unfilteredFiles[0])];
+			} else {
+				files = [];
+			}
+			error = '';
+			valid = true;
+		} catch (e) {
+			if (unfilteredFiles?.length) {
+				unfilteredFiles = [];
+			}
+			files = [];
+			valid = false;
+			error = e.message;
+		}
+	}
 
-        function preventDefaults(e) {
-            e.preventDefault();
-            console.log(e);
-            e.stopPropagation();
-        }
+	function handleFilesUpload(files: File[]) {
+		for (const file of files) {
+			if (multiple) {
+				unfilteredFiles = [...unfilteredFiles, file];
+			} else {
+				unfilteredFiles = [file];
+			}
+		}
+	}
 
-        dragOverArea.addEventListener('drop', handleDrop, false);
+	function checkValidity() {
+		if (required && !files.length) {
+			valid = false;
+			error = 'This field is required';
+		} else {
+			valid = true;
+			error = '';
+		}
+		return valid;
+	}
 
-        function handleDrop(e) {
-            let dt = e.dataTransfer;
-            let files = dt.files;
-            dragover = false;
+	onMount(() => {
+		isDragAndDropSupported =
+			'draggable' in document.createElement('div') &&
+			'ondragstart' in document.createElement('div') &&
+			'ondrop' in document.createElement('div');
 
-            handleFiles(files);
-        }
+		if (!isDragAndDropSupported) {
+			console.warn('Drag and drop files is not supported in this browser');
+			return;
+		}
 
-        function handleFiles(files) {
-            for (let i = 0; i < files.length; i++) {
-                let file = files[i];
+		dragAndDropFiles(dragOverArea, handleFilesUpload, (hovering) => {
+			dragover = hovering;
+		});
 
-                // add file to buffer array
-                if (multiple) {
-                    unfilteredFiles = [...unfilteredFiles, file];
-                } else {
-                    unfilteredFiles = [file];
-                }
+		input.submit = submit;
+	});
 
-                console.log('File:', file.name);
-            }
-        }
-
-        // Additional styling for dragover and dragleave events (optional)
-        dragOverArea.addEventListener('dragover', () => {
-            dragover = true;
-        });
-
-        dragOverArea.addEventListener('dragleave', () => {
-            dragover = false;
-        });
-    });
-
-    function ellipsisInTheMiddle(str, max) {
-        if (str.length > max) {
-            return str.substring(0, max / 2) + '...' + str.substring(str.length - max / 2, str.length);
-        }
-        return str;
-    }
+	function submit() {
+		return checkValidity(true);
+	}
 </script>
 
-<style>
-    .area-style {
-        @apply overflow-hidden invalid:border-red-500 flex flex-col items-center font-medium border border-dashed border-surface-3 text-surface-10 text-sm rounded-lg ring-0 w-full p-8 transition-all;
-    }
-
-    .button-focus {
-        @apply ring-2 ring-accent-5 border-accent-5 ring-opacity-50;
-    }
-
-    .area-error {
-        @apply border-red-300;
-    }
-
-    .button {
-        @apply focus:scale-[1.05] duration-500 active:brightness-[120%] whitespace-nowrap hover:scale-[1.05] active:shadow-none active:scale-100 hover:shadow-xl hover:brightness-[105%]
-    }
-
-    .button-error {
-        @apply bg-red-500 text-surface-0;
-    }
-
-    .dragover {
-        @apply bg-accent-1 border-accent-5;
-    }
-
-    input[type="file"] {
-        width: 0;
-        height: 0;
-        opacity: 0;
-        overflow: hidden;
-    }
-
-    .hide {
-        display: none;
-    }
-
-    .p {
-        @apply text-xs md:text-sm w-full line-clamp-2 lg:line-clamp-1 overflow-hidden text-ellipsis text-center;
-    }
-</style>
-
-<div  bind:this={dragOverArea} class="{$$restProps.class || ''} relative group" on:click={() => input?.focus()}>
-    <label for={label} class="label">
-        {#if label}
-            <div class="flex justify-between items-center">
-                <span class="text-surface-8 text-sm font-semibold">{label}<span class="text-red-500">{required ? '*' : ''}</span></span>
-            </div>
-        {/if}
-        <div class:dragover={dragover} class="area-style hover:cursor-pointer" class:area-error={!valid}>
-            <div class:button-focus="{focus}" class="button hover:border-accent-5 bg-surface-0/25 transition-all rounded-full border border-surface-2 p-4 mb-1">
-                {#if value}
-                    <Check class="text-accent-5 h-6 w-6" />
-                {:else}
-                    <UploadIcon class="text-accent-5 h-6 w-6" />
-                {/if}
-            </div>
-            {#if value}
-                <p class="text-surface-8 p">{ellipsisInTheMiddle(value.name, 35)} <span class="text-surface-5">({byteSizeToString(value.size)})</span></p>
-            {:else}
-                {#if error}
-                    <p class="text-red-500 p">{error}</p>
-                {:else}
-                    <p class="text-surface-8 p"><span class="text-accent-5 font-semibold">Select a file</span> <span class:hide={!isDragAndDropSupported}>or drag and drop one.</span></p>
-                {/if}
-            {/if}
-            {#if subtext}
-                <p class="text-surface-4 text-xs">{subtext}</p>
-            {/if}
-        </div>
-        <input bind:this={input} id={label} size={length} type="file" on:invalid on:focus={() => focus = true} on:blur={() => focus = false} on:click on:input bind:files={unfilteredFiles} {accept} {multiple} />
-    </label>
+<div
+	bind:this={dragOverArea}
+	class="{$$restProps.class ?? ''} relative group"
+	on:click={() => input?.focus()}
+>
+	<label for={label} class="label">
+		{#if label}
+			<div class="flex justify-between items-center">
+				<span class="text-surface-8 text-sm font-semibold"
+					>{label}<span class="text-red-500">{required ? '*' : ''}</span></span
+				>
+			</div>
+		{/if}
+		<div class:dragover class="area-style hover:cursor-pointer" class:area-error={!valid}>
+			<div
+				class:button-focus={focus}
+				class="button hover:border-accent-5 bg-surface-0/25 transition-all rounded-full border border-surface-2 p-4 mb-1"
+			>
+				{#if value}
+					<div in:scale={{ duration: 300, delay: 300, opacity: 0.5, easing: cubicOut }}>
+						<Check class="text-accent-5 h-6 w-6" />
+					</div>
+				{:else if dragover}
+					<div in:scale={{ duration: 300, delay: 300, opacity: 0.5, easing: cubicOut }}>
+						<PlusIcon class="text-accent-5 h-6 w-6" />
+					</div>
+				{:else}
+					<div in:scale={{ duration: 300, delay: 300, opacity: 0.5, easing: cubicOut }}>
+						<UploadIcon class="text-accent-5 h-6 w-6" />
+					</div>
+				{/if}
+			</div>
+			{#if value}
+				<p class="text-surface-8 p">
+					{ellipsisInTheMiddle(value.name, 35)}
+					<span class="text-surface-5">({BinarySize.fromBytes(value.size).toString()})</span>
+				</p>
+			{:else if error}
+				<p class="text-red-500 p">{error}</p>
+			{:else}
+				<p class="text-surface-8 p">
+					<span class="text-accent-5 font-semibold">Select a file</span>
+					<span class:hide={!isDragAndDropSupported}>or drag and drop one.</span>
+				</p>
+			{/if}
+			{#if subtext}
+				<p class="text-surface-4 text-xs">{subtext}</p>
+			{/if}
+		</div>
+		<input
+			bind:this={input}
+			id={label}
+			size={length}
+			type="file"
+			on:focus={() => (focus = true)}
+			on:blur={() => (focus = false)}
+			on:click
+			on:input={onInput}
+			bind:files={unfilteredFiles}
+			{accept}
+			{multiple}
+			data-form-element="textinput"
+		/>
+	</label>
 </div>
+
+<style>
+	.area-style {
+		@apply overflow-hidden invalid:border-red-500 flex flex-col items-center font-medium border border-dashed border-surface-3 text-surface-10 text-sm rounded-lg ring-0 w-full p-8 transition-all;
+	}
+
+	.button-focus {
+		@apply ring-2 ring-accent-5 border-accent-5 ring-opacity-50;
+	}
+
+	.area-error {
+		@apply border-red-300;
+	}
+
+	.button {
+		@apply focus:scale-[1.05] duration-500 active:brightness-[120%] whitespace-nowrap hover:scale-[1.05] active:shadow-none active:scale-100 hover:shadow-xl hover:brightness-[105%];
+	}
+
+	.button-error {
+		@apply bg-red-500 text-surface-0;
+	}
+
+	.dragover {
+		@apply bg-accent-1 border-accent-5;
+	}
+
+	input[type='file'] {
+		width: 0;
+		height: 0;
+		opacity: 0;
+		overflow: hidden;
+	}
+
+	.hide {
+		display: none;
+	}
+
+	.p {
+		@apply text-xs md:text-sm w-full line-clamp-2 lg:line-clamp-1 overflow-hidden text-ellipsis text-center;
+	}
+</style>

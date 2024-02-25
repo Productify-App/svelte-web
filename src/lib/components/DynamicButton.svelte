@@ -2,25 +2,52 @@
 	export let href: string | null = null;
 	export let tabindex: number | null = null;
 	export let selectNone: boolean = false;
+	export let submit = false;
+	export let reset = false;
+	export let disabled = false;
 
 	let className = '';
 	export { className as class };
 </script>
 
-
-{#if href}
-	<a {href} {tabindex} on:click on:blur class={className + '  group'}>
+{#if submit}
+	<button
+		type="submit"
+		on:click
+		tabindex
+		{disabled}
+		class={`${selectNone ? 'hover:cursor-default ' : ''}${className} group`}
+	>
+		<slot />
+	</button>
+{:else if reset}
+	<button
+		type="reset"
+		on:click
+		tabindex
+		{disabled}
+		class={`${selectNone ? 'hover:cursor-default ' : ''}${className} group`}
+	>
+		<slot />
+	</button>
+{:else if href}
+	<a {href} {disabled} {tabindex} on:click on:blur class={className + '  group'}>
 		<slot />
 	</a>
 {:else}
-	<button on:click tabindex class={`${selectNone ? 'hover:cursor-default ' : ''}${className} group`} >
+	<button
+		on:click
+		tabindex
+		{disabled}
+		class={`${selectNone ? 'hover:cursor-default ' : ''}${className} group`}
+	>
 		<slot />
 	</button>
 {/if}
 
 <style>
 	.button {
-	@apply active:brightness-[120%] whitespace-nowrap hover:scale-[1.05] focus:scale-[1.05] active:shadow-none active:scale-100 hover:shadow-xl hover:brightness-[105%] flex gap-2 items-center font-semibold transition-all ease-in-out duration-500 focus:outline-none rounded-xl cursor-pointer px-5 py-2.5 text-xs border-2 bg-primary-5 border-primary-5 text-white;
+		@apply disabled:brightness-90 active:brightness-[120%] whitespace-nowrap hover:scale-[1.05] focus:scale-[1.05] active:shadow-none active:scale-100 hover:shadow-xl hover:brightness-[105%] flex gap-2 items-center font-semibold transition-all ease-in-out duration-500 focus:outline-none rounded-xl cursor-pointer px-5 py-2.5 text-xs border-2 bg-primary-5 border-primary-5 text-white;
 	}
 
 	.button.sm {

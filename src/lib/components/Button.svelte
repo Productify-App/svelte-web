@@ -11,13 +11,16 @@
 	export let notab = false;
 	export let leftIcon: ComponentType<Icon> | null = null;
 	export let rightIcon: ComponentType<Icon> | null = null;
+	export let submit = false;
+	export let reset = false;
+	export let disabled = false;
 
 	let className: string;
 
 	export { className as class };
 </script>
 
-<DynamicButton href={link} on:click tabindex={notab ? '-1' : undefined} class={`button ${color} ${size} ${className} ${outlined ? 'outlined' : ''}`}>
+<DynamicButton {disabled} {submit} {reset} href={link} on:click tabindex={notab ? '-1' : undefined} class={`button ${color} ${size} ${className} ${outlined ? 'outlined' : ''}`}>
 	{#if leftIcon}
 		<svelte:component this={leftIcon} class="w-5 h-5 stroke-2" />
 	{/if}

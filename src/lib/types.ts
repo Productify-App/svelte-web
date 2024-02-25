@@ -9,4 +9,15 @@ interface job {
     requirements: string[];
 }
 
-export type { job };
+interface application {
+    jobId: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    phoneNumber: string;
+    linkedin: string;
+    message: string;
+    resume: File | null;
+}
+
+export type { job, application };
