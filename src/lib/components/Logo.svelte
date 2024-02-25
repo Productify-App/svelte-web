@@ -4,11 +4,15 @@
     export let link = "";
     export let icon: "light" | "accent" = "accent";
     export let text: "light" | "dark" = "light";
+
+    let className = "";
+
+    export { className as class };
 </script>
 
 <style>
     .icon.accent {
-        @apply fill-accent-5;
+        @apply fill-accent-5 group-focus:fill-primary-6;
     }
 
     .icon.light {
@@ -25,7 +29,7 @@
 </style>
 
 <DynamicButton href={link} on:click>
-    <svg class="h-10 block" viewBox="0 0 276 62" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg class={`h-10 block ${className}`} viewBox="0 0 276 62" fill="none" xmlns="http://www.w3.org/2000/svg">
         <g class={`transition-all text ${text}`} clip-path="url(#clip0_680_550)">
             <path d="M48.4907 16.4126L36.8216 33.479L28.8745 26.9591L8 45.5872H72.001L48.4907 16.4126Z" class={`transition-all icon ${icon}`} />
             <path d="M86.3207 32.5693H91.8588C93.5564 32.5693 94.9036 32.1188 95.9003 31.2177C96.897 30.3166 97.3965 29.0593 97.3987 27.4457C97.4031 25.7241 96.9086 24.4254 95.9152 23.5497C94.9218 22.674 93.5813 22.2367 91.8936 22.2378H86.3141L87.2578 21.1724V45.6569H82.5044V17.728H92.4747C94.4715 17.728 96.2016 18.1449 97.6652 18.9787C99.1043 19.7876 100.29 20.9801 101.091 22.4231C101.912 23.88 102.323 25.5543 102.323 27.4457C102.352 29.1849 101.928 30.9018 101.091 32.427C100.291 33.8737 99.0958 35.0636 97.6454 35.8582C96.1685 36.6787 94.445 37.0885 92.4747 37.0874H86.3207V32.5693Z" />

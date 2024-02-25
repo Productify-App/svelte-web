@@ -1,4 +1,4 @@
-export type job = {
+interface job {
     title: string;
     locations: string[];
     tags: string[];
@@ -9,5 +9,4 @@ export type job = {
     requirements: string[];
 }
 
-export class type {
-}
+export type { job };

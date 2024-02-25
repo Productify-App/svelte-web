@@ -1,3 +1,0 @@
-<p>
-    LISTINGS
-</p>
