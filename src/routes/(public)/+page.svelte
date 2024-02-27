@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { type job } from '$lib/types';
+	import { type Job } from '$lib/types';
 	import { type ComponentType } from 'svelte';
 
 	import Saos from 'saos';
@@ -16,7 +16,7 @@
 	import ScrollingJobCard from './ScrollingJobCard.svelte';
 
 	export let data: {
-		jobs: job[];
+		jobs: Job[];
 	};
 
 	const featureCards: {

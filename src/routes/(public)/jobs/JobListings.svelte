@@ -1,18 +1,18 @@
 <script lang="ts">
     import ButtonTabs from "$lib/components/ButtonTabs.svelte";
     import JobCard from "./JobCard.svelte";
-    import { type job } from "$lib/types";
+    import { type Job } from "$lib/types";
     import Button from "$lib/components/Button.svelte";
     import { fade } from 'svelte/transition';
 
     let tabs = ["All Positions", "Design", "Marketing", "Management", "Development", "Software"];
     let tab = 0;
 
-    export let jobs: job[];
-    let filteredJobs: job[] = [];
+    export let jobs: Job[];
+    let filteredJobs: Job[] = [];
 
     $: filteredJobs = filterJobs(jobs, null);
-    function filterJobs(jobs: job[], category: string | null = null) {
+    function filterJobs(jobs: Job[], category: string | null = null) {
         console.log(category);
 
         if (category === null) {

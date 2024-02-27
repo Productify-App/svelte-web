@@ -1,4 +1,4 @@
-POCKETPORT=8090
-
-"/usr/bin/pm2" restart "productify" && echo "Restarting Service" || cd "/server/productify" && npm run start && echo "Starting Service"
-# "/server/productify/database/quizzable" serve || fuser -n tcp -k $POCKETPORT && "/server/quizzable/database/quizzable" serve
+cd "/server/productify"
+# get date 4 hours ago bc of timezone
+NOW=$(date --date="5 hours ago" +"%Y-%m-%d %H:%M:%S")
+echo "Starting Service: $NOW" && npm run start || echo "Service failed to start"

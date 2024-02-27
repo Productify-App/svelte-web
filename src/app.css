@@ -18,6 +18,11 @@ html, body {
     font-weight: 500;
 }
 
+*:focus {
+    outline: none;
+    @apply transition-all duration-300 ring-2 ring-primary-5;
+}
+
 .content {
     @apply p-24;
 }

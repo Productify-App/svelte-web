@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { type job } from '$lib/types';
+	import { type Job } from '$lib/types';
 	import { onMount } from 'svelte';
 	import { ArrowRight, CornerDownRight } from 'lucide-svelte';
 
@@ -9,7 +9,7 @@
 	import Saos from 'saos';
 
 	export let data: {
-		job: job;
+		job: Job;
 	};
 
 	onMount(() => {

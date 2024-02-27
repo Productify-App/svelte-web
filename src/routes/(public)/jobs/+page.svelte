@@ -4,10 +4,10 @@
     import Benefits from "$lib/components/Benefits.svelte";
     import Footer from "$lib/components/Footer.svelte";
     import JobListings from "./JobListings.svelte";
-    import { type job } from "$lib/types";
+    import { type Job } from "$lib/types";
 
     export let data: {
-        jobs: job[];
+        jobs: Job[];
     };
 </script>
 

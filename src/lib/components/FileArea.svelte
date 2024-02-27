@@ -10,6 +10,7 @@
 	export { typeValue as type };
 	export let multiple = false;
 	export let files: File[] = [];
+	export let startingFiles: File[] = [];
 	export let length = 0;
 	export let value = null;
 	export let label = '';
@@ -28,6 +29,15 @@
 	let isDragAndDropSupported = false;
 	let input: HTMLInputElement | null = null;
 	let dragOverArea: HTMLElement | null = null;
+
+	$: setFiles(startingFiles);
+
+	function setFiles(files: File[]) {
+		console.log('startngFiles', startingFiles);
+		if (files.length && files[0] && !unfilteredFiles?.length) {
+			unfilteredFiles = files;
+		}
+	}
 
 	$: {
 		if (focus) {
@@ -61,8 +71,8 @@
 	function onChange() {
 		if (multiple && unfilteredFiles.length) {
 			dispatch('change', { value: unfilteredFiles });
-		} else if (unfilteredFiles.length) {
-			dispatch('change', { value: unfilteredFiles[0] });
+		} else if (unfilteredFiles && unfilteredFiles.length) {
+			dispatch('change', { value: unfilteredFiles[0] ?? null });
 		} else {
 			dispatch('change', { value: null });
 		}
@@ -148,8 +158,22 @@
 	on:click={() => input?.focus()}
 >
 	<label for={label} class="label">
+		<input
+				bind:this={input}
+				id={label}
+				size={length}
+				type="file"
+				on:focus={() => (focus = true)}
+				on:blur={() => (focus = false)}
+				on:click
+				on:input={onInput}
+				bind:files={unfilteredFiles}
+				{accept}
+				{multiple}
+				data-form-element="textinput"
+		/>
 		{#if label}
-			<div class="flex justify-between items-center">
+			<div class="flex justify-between items-center mb-1">
 				<span class="text-surface-8 text-sm font-semibold"
 					>{label}<span class="text-red-500">{required ? '*' : ''}</span></span
 				>
@@ -191,20 +215,6 @@
 				<p class="text-surface-4 text-xs">{subtext}</p>
 			{/if}
 		</div>
-		<input
-			bind:this={input}
-			id={label}
-			size={length}
-			type="file"
-			on:focus={() => (focus = true)}
-			on:blur={() => (focus = false)}
-			on:click
-			on:input={onInput}
-			bind:files={unfilteredFiles}
-			{accept}
-			{multiple}
-			data-form-element="textinput"
-		/>
 	</label>
 </div>
 
@@ -238,6 +248,7 @@
 		height: 0;
 		opacity: 0;
 		overflow: hidden;
+		position: absolute;
 	}
 
 	.hide {

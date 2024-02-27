@@ -116,7 +116,7 @@
 			</div>
 		{/if}
 		<div
-			class="area-style flex m-0 p-0 hover:cursor-text overflow-hidden"
+			class="area-style flex m-0 p-0 hover:cursor-text items-center overflow-hidden"
 			class:input-focus={focus}
 			class:input-error={!valid}
 		>
@@ -124,7 +124,7 @@
 			<input
 				bind:this={input}
 				size={length}
-				class="text-surface-8 placeholder-surface-4 text-sm m-0 p-0 grow border-none bg-surface-0 bg-opacity-0 outline-none focus:ring-0"
+				class="overflow-hidden text-surface-8 placeholder-surface-4 text-sm m-0 p-0 grow border-none bg-surface-0 bg-opacity-0 outline-none focus:ring-0"
 				on:invalid
 				on:focus={() => (focus = true)}
 				on:blur={() => (focus = false)}

@@ -1,4 +1,4 @@
-interface job {
+interface Job {
     title: string;
     locations: string[];
     tags: string[];
@@ -9,7 +9,7 @@ interface job {
     requirements: string[];
 }
 
-interface application {
+interface Application {
     jobId: string;
     firstName: string;
     lastName: string;
@@ -20,4 +20,18 @@ interface application {
     resume: File | null;
 }
 
-export type { job, application };
+interface BotProtectedApplication extends Application {
+    hCaptchaToken: string;
+}
+
+interface User {
+    id: string;
+    username: string;
+    email: string;
+    name: string;
+    avatar: string;
+    created: string;
+    updated: string;
+}
+
+export type { Job, Application, User, BotProtectedApplication };

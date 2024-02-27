@@ -47,29 +47,34 @@
 
 <style>
 	.button {
-		@apply disabled:brightness-90 active:brightness-[120%] whitespace-nowrap hover:scale-[1.05] focus:scale-[1.05] active:shadow-none active:scale-100 hover:shadow-xl hover:brightness-[105%] flex gap-2 items-center font-semibold transition-all ease-in-out duration-500 focus:outline-none rounded-xl cursor-pointer px-5 py-2.5 text-xs border-2 bg-primary-5 border-primary-5 text-white;
+		/*@apply disabled:brightness-90 active:brightness-[120%] whitespace-nowrap hover:scale-[1.05] focus:scale-[1.05] active:shadow-none active:scale-100 hover:shadow-xl hover:brightness-[105%] flex gap-2 items-center font-semibold transition-all ease-in-out duration-500 focus:outline-none rounded-xl cursor-pointer px-5 py-2.5 text-xs border-2 bg-primary-5 border-primary-5 text-white;*/
+		@apply disabled:brightness-[.9] hover:brightness-110 active:brightness-95 flex gap-2.5 flex-nowrap whitespace-nowrap items-center font-medium border border-primary-5 text-surface-10 rounded-lg ring-0 transition-all hover:border-primary-5 focus:ring-2 focus:ring-primary-5 focus:ring-opacity-50 outline-none;
 	}
 
 	.button.sm {
-		@apply px-4 py-2 text-xs;
+		@apply px-3 py-1.5 text-xs hover:shadow-sm;
+	}
+
+	.button.md {
+		@apply p-2.5 px-5 text-sm hover:shadow;
 	}
 
 	.button.lg {
-		@apply px-6 py-3 text-sm h-14;
+		@apply px-8 py-3 text-base rounded-xl hover:shadow-lg;
 	}
 
 	.button.xl {
-		@apply px-8 py-4 text-base;
+		@apply px-8 py-4 text-base hover:shadow-lg;
 	}
 
 	/* WHITE BUTTON */
 	.button.white {
-		@apply border-0 bg-surface-0 border-white text-surface-10;
+		@apply bg-white border-white text-surface-10 focus:ring-white/50;
 	}
 
 	/* PRIMARY BUTTON AND VARIATIONS */
 	.button.primary {
-		@apply border-2 bg-primary-5 border-primary-5 text-white;
+		@apply bg-primary-5 border-primary-4/50 text-white;
 	}
 
 	.button.primary.glowing {
@@ -78,7 +83,7 @@
 
 	/* SECONDARY BUTTON AND VARIATIONS */
 	.button.accent {
-		@apply border-2 bg-accent-5 border-accent-5 text-accent-1;
+		@apply border-2 bg-accent-5 border-accent-5 text-accent-1 focus:ring-accent-5/50;
 	}
 
 	.button.accent.glowing {
@@ -87,11 +92,11 @@
 
 	/* SURFACE BUTTON AND VARIATIONS */
 	.button.surface {
-		@apply border-2 bg-surface-2 border-surface-2 text-surface-8;
+		@apply bg-surface-0 border-surface-1 text-surface-7 focus:ring-surface-2/50 hover:brightness-[1.02] active:brightness-95;
 	}
 
 	.button.surface.outlined {
-		@apply border-surface-4 text-surface-4;
+		@apply border border-surface-3 text-surface-5 bg-opacity-0;
 	}
 
 	.button.surface.outlined.dark {

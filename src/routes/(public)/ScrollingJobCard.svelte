@@ -1,12 +1,12 @@
 <script lang="ts">
 	import Button from '$lib/components/Button.svelte';
-	import type { job } from '$lib/types';
+	import type { Job } from '$lib/types';
 
-	export let info: job;
+	export let info: Job;
 </script>
 
 <div
-	class="sliding-cards w-[30rem] shrink-0 mx-2 bg-surface-9 border-2 border-surface-6 shadow-lg shadow-surface-8 rounded-xl p-8 sliding-cards"
+	class="sliding-cards w-[30rem] shrink-0 mx-2 bg-surface-9 border border-surface-6 shadow-lg shadow-surface-8 rounded-xl p-8 sliding-cards"
 >
 	<h5 class="text-4xl font-bold text-white whitespace-nowrap">{info.title}</h5>
 	<p class="text-surface-2 mt-4">
