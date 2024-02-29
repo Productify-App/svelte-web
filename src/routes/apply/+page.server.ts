@@ -1,13 +1,12 @@
 import { redirect, type Actions } from '@sveltejs/kit';
-import type { Application } from '$lib/types';
+import type {Application, BotProtectedApplication} from '$lib/types';
 import { readForm } from '$lib/formUtils';
 import { pb } from '$lib/pocketbase';
 import { HCAPTCHA_SECRET } from '$env/static/private';
 
 export const actions: Actions = {
 	submit: async ({ locals, request }) => {
-		const data = readForm(await request.formData()) as Application;
-		console.log(data);
+		const data = readForm(await request.formData()) as BotProtectedApplication;
 
 		const valid = await fetch('https://hcaptcha.com/siteverify', {
 			method: 'POST',
@@ -30,6 +29,9 @@ export const actions: Actions = {
 
 		try {
 			const record = {
+				applyingFor: data.jobId,
+				location: data.location,
+				fullTime: data.fullTime === 'true',
 				firstName: data.firstName,
 				lastName: data.lastName,
 				email: data.email,

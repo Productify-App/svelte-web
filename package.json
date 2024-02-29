@@ -39,6 +39,7 @@
 	"type": "module",
 	"dependencies": {
 		"@sveltejs/adapter-node": "^4.0.1",
+		"floating-ui": "^5.2.8",
 		"lucide-svelte": "^0.334.0",
 		"pocketbase": "^0.21.1"
 	}

@@ -7,20 +7,31 @@
 	import Button from '$lib/components/Button.svelte';
 	import { BinarySize } from '$lib/utils';
 	import { onMount } from 'svelte';
-	import type { BotProtectedApplication } from '$lib/types';
+	import type {BotProtectedApplication, DBJob} from '$lib/types';
 	import { sendToServer } from '$lib/formUtils';
 	import { linear } from 'svelte/easing';
 
 	import { fade } from 'svelte/transition';
 	import PageButtons from './PageButtons.svelte';
 	import HCaptcha from '$lib/components/HCaptcha.svelte';
+	import SelectInput from "$lib/components/SelectInput.svelte";
+	import {BriefcaseIcon, MapPinIcon} from "lucide-svelte";
+
+	export let data: {
+		jobs: DBJob[];
+		defaultJob: string;
+	} = { jobs: [] };
+
+	console.log(data);
 
 	let inputs = [];
 	let submitting = false;
-
+	let selectedJob: DBJob | null = null;
 	let message = '';
-
 	let page = 1;
+
+	let jobListings: {id: string, value: string}[] = [];
+	let jobLocations: {id: string, value: string}[] = [];
 
 	const pageManager = {
 		page: 1,
@@ -53,15 +64,10 @@
 		input.value = input.value.replace(/[^a-zA-Z0-9@._-]/g, '');
 	}
 
-	const jobInfo = {
-		id: '1m123042',
-		title: 'Frontend Developer',
-		location: '',
-		posted: '2 days ago'
-	};
-
 	const form: BotProtectedApplication = {
-		jobId: '1m123042',
+		jobId: '',
+		location: '',
+		fullTime: '',
 		firstName: '',
 		lastName: '',
 		email: '',
@@ -75,18 +81,26 @@
 	onMount(() => {
 		// get every element inside the form WITH the data-form-element attribute
 		inputs = Array.from(document.querySelectorAll('form [data-form-element]'));
+		jobListings = data.jobs?.map((job) => ({ id: job.id, value: job.title })) ?? [];
+
+		// get the ?id= query parameter from the URL
+		const url = new URL(window.location.href);
+		const id = url.searchParams.get('id');
+
+		console.log(id, 'from url');
+
+		form.jobId = jobListings.find((job) => job.id === id)?.id ?? '';
+		updateSelectedJob({ detail: { value: form.jobId } });
 	});
+
+	function updateSelectedJob(e: CustomEvent) {
+		const id = e.detail.value;
+		selectedJob = data.jobs.find((job) => job.id === id);
+		jobLocations = selectedJob.expand.locations.map((loc) => ({ id: loc.id, value: loc.location }));
+	}
 
 	function backward() {
 		page--;
-	}
-
-	function keyDown(event: KeyboardEvent) {
-		if (event.key === 'Enter') {
-			event.preventDefault();
-			event.stopPropagation();
-			onSubmit(event);
-		}
 	}
 
 	async function onSubmit() {
@@ -148,13 +162,6 @@
 						class:border-surface-2={page < i}
 						class="transition-all duration-200 rounded-full col-span-1 h-0 border-t-2 w-full"
 					/>
-					<!--					<p-->
-					<!--						class="text-sm mt-1 font-semibold"-->
-					<!--						class:text-surface-5={page !== i}-->
-					<!--						class:text-primary-5={page === i}-->
-					<!--					>-->
-					<!--						STEP {i}-->
-					<!--					</p>-->
 					<p class="text-surface-7 mt-2">{stage}</p>
 				</div>
 			{/each}
@@ -164,13 +171,44 @@
 				<div
 					in:fade={{ delay: 300, duration: 300, scale: 0.9, easing: linear }}
 					out:fade={{ duration: 300, scale: 0.9, easing: linear }}
+					class="flex flex-col gap-2"
 				>
-					<div>
-						<p class="text-surface-5 mb-1">Welcome. First things first...</p>
-						<h1 class="text-2xl sm:text-3xl font-bold text-surface-9 mb-4">
-							What job are you applying for?
-						</h1>
-					</div>
+					<p class="text-surface-5 mb-1">Welcome. First things first...</p>
+					<h1 class="text-2xl sm:text-3xl font-bold text-surface-9 mb-4">
+						What job are you applying for?
+					</h1>
+					<SelectInput
+					label="What are you applying for?"
+					bind:value={form.jobId}
+					required
+					on:change={updateSelectedJob}
+					options={jobListings} placeholder="Search open positions">
+						<div slot="before" class="mr-2.5">
+							<BriefcaseIcon class="w-[20px] h-[20px] aspect-square text-surface-6" />
+						</div>
+					</SelectInput>
+					<SelectInput
+							label="Select an office location, or choose remote"
+							required
+							disabled={form.jobId === ''}
+							bind:value={form.location}
+							options={jobLocations} placeholder="Search office locations">
+						<div slot="before" class="mr-2.5">
+							<MapPinIcon class="w-[20px] h-[20px] aspect-square text-surface-6" />
+						</div>
+					</SelectInput>
+					<SelectInput
+							label="Full time or part time?"
+							required
+							bind:value={form.fullTime}
+							options={[
+								{ id: 'true', value: 'Full time' },
+								{ id: 'false', value: 'Part time' }
+							]} placeholder="Search office locations">
+						<div slot="before" class="mr-2.5">
+							<MapPinIcon class="w-[20px] h-[20px] aspect-square text-surface-6" />
+						</div>
+					</SelectInput>
 					<PageButtons {onSubmit} page={1} bind:submitting on:backward={() => backward} />
 				</div>
 			{:else if page === 2}
