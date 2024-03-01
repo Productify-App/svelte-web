@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { type Job } from '$lib/types';
 	import { onMount } from 'svelte';
-	import {ArrowLeft, ArrowRight, CornerDownRight} from 'lucide-svelte';
+	import { ArrowLeft, ArrowRight, CornerDownRight } from 'lucide-svelte';
 
 	import Divider from '$lib/components/Divider.svelte';
 	import Footer from '$lib/components/Footer.svelte';
 	import Button from '$lib/components/Button.svelte';
 	import Saos from 'saos';
-	import type {DBJob} from "$lib/types.js";
+	import type { DBJob } from '$lib/types.js';
 
 	export let data: {
 		job: DBJob;
@@ -39,7 +39,10 @@
 					{data.job.title}
 				</h1>
 				<h1 class="text-lg font-bold z-30 text-primary-2 mx-auto w-full">
-					{data.job.expand.locations.map((loc) => loc.location).join(' OR ').toUpperCase()}
+					{data.job.expand.locations
+						.map((loc) => loc.location)
+						.join(' OR ')
+						.toUpperCase()}
 				</h1>
 			</div>
 		</div>
@@ -87,6 +90,12 @@
 				</Saos>
 			{/each}
 		</ul>
+		<Divider />
+		<h1 class="text-xl font-semibold text-surface-9 mt-8">Expectations</h1>
+		<p class="text-surface-7 mt-4 mb-8">
+			{data.job.info?.salary ??
+				'Estimate: $50,000 \n\nThis includes base salary and may also include performance-based bonuses.'}
+		</p>
 		<div class="w-full">
 			<Saos once={true} animation={'slide-up-small 1s cubic-bezier(0.55, 0, 0.1, 1) both 0.3s'}>
 				<Button

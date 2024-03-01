@@ -210,7 +210,7 @@
 							options={[
 								{ id: 'true', value: 'Full time' },
 								{ id: 'false', value: 'Part time' }
-							]} placeholder="Search office locations">
+							]} placeholder="Select">
 						<div slot="before" class="mr-2.5">
 							<Clock2Icon class="w-[20px] h-[20px] aspect-square text-surface-6" />
 						</div>
