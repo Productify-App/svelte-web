@@ -50,9 +50,7 @@
                 clearTimeout(timeout);
             }
 
-            if (value === '') {
-                runFilter();
-            }
+            runFilter(true, true);
 
         } else {
             console.log('blur', value);
@@ -67,14 +65,13 @@
         const bufferValue = options.find((o) => o.value.toLowerCase() === buffer.toLowerCase())?.id ?? null;
         if (bufferValue !== null && bufferValue !== value) {
             value = bufferValue;
-
             dispatch('change', {value});
         }
 
         runFilter();
     }
 
-    function runFilter(show = true) {
+    function runFilter(show = true, allOptions = false) {
         if (focus && show) {
             showDropdown = true;
         }
@@ -84,7 +81,7 @@
         }
 
         const indexedOptions = options.map((option, index) => ({...option, index}));
-        if (buffer === '') {
+        if (buffer === '' || allOptions) {
             // add index to each option
             filteredOptions = indexedOptions;
         } else {
@@ -181,11 +178,6 @@
                     on:focus={() => (focus = true)}
                     on:blur={() => (focus = false)}
                     tabindex={disabled ? -1 : 0}
-                    on:dblclick={() => {
-                        if (focus) {
-                            runFilter();
-                        }
-                    }}
                     on:keydown={handleKeys}
                     bind:value={buffer}
                     {placeholder}

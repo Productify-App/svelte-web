@@ -1,15 +1,14 @@
 <script lang="ts">
     import ButtonTabs from "$lib/components/ButtonTabs.svelte";
     import JobCard from "./JobCard.svelte";
-    import { type Job } from "$lib/types";
-    import Button from "$lib/components/Button.svelte";
+    import { type DBJob } from "$lib/types";
     import { fade } from 'svelte/transition';
 
-    let tabs = ["All Positions", "Design", "Marketing", "Management", "Development", "Software"];
+    export let tabs = ["All Positions", "Design", "Marketing", "Management", "Development", "Software"];
     let tab = 0;
 
-    export let jobs: Job[];
-    let filteredJobs: Job[] = [];
+    export let jobs: DBJob[];
+    let filteredJobs: DBJob[] = [];
 
     $: filteredJobs = filterJobs(jobs, null);
     function filterJobs(jobs: Job[], category: string | null = null) {
@@ -19,7 +18,7 @@
             return jobs;
         }
 
-        return jobs.filter(job => job.tags.includes(category));
+        return jobs.filter(job => job.expand.tags.map(tag => tag.tag.toLowerCase()).includes(category.toLowerCase()));
     }
 </script>
 

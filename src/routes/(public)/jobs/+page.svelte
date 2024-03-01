@@ -4,12 +4,25 @@
     import Benefits from "$lib/components/Benefits.svelte";
     import Footer from "$lib/components/Footer.svelte";
     import JobListings from "./JobListings.svelte";
-    import { type Job } from "$lib/types";
+    import { type DBJob } from "$lib/types";
+    import {onMount} from "svelte";
 
     export let data: {
-        jobs: Job[];
+        jobs: DBJob[];
+        tags: string[];
+    } = {
+        jobs: [],
+        tags: []
     };
+
+    onMount(() => {
+        console.log('server data', data);
+    });
 </script>
+
+<svelte:head>
+    <title> Jobs | Productify</title>
+</svelte:head>
 
 <section id="top" class="-z-20 max-h-[800px] pt-20 bg-primary-5">
     <div class="max-w-screen-xl px-8 pb-8 mx-auto gap-24 pt-20">
@@ -30,6 +43,6 @@
         <path d="M0 0V5.63C215.899 59 452.29 71.32 685.195 42.57C747.115 34.93 806.486 22.45 868.954 16.11C953.914 7.48 1030.92 28.35 1107.36 51.51C1192.22 77.22 1275.84 95.24 1369.73 90C1494.33 83 1618.07 44.29 1728 5.19V0H0Z" fill="#1A66FF"/>
     </svg>
 </section>
-<JobListings jobs={data.jobs} />
+<JobListings jobs={data.jobs} tabs={data.tags} />
 <Benefits class="pb-[16vh]" />
 <Footer />

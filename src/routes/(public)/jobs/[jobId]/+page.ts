@@ -1,4 +1,5 @@
-import { jobs } from '$lib/jobs.json';
+import {pb} from "$lib/pocketbase";
+import type {DBJob} from "$lib/types";
 
 const NOT_FOUND_ERROR = {
     status: 404,
@@ -8,19 +9,18 @@ const NOT_FOUND_ERROR = {
 };
 
 export const load = async ({params}: {params: {jobId: string}}) => {
-    const jobId = params.jobId;
+    console.log(params.jobId);
 
-    if (!jobId) {
-        return NOT_FOUND_ERROR;
-    }
+    const job = await pb.collection("jobs").getFullList({
+        filter: `id = "${params.jobId}" && open = true`,
+        expand: "locations,tags"
+    });
 
-    const job = jobs.find(job => job.id === jobId);
-
-    if (!job) {
+    if (!job.length) {
         return NOT_FOUND_ERROR;
     }
 
     return {
-        job: job
+        job: job[0]
     };
 }

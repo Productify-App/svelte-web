@@ -15,7 +15,7 @@
 	import PageButtons from './PageButtons.svelte';
 	import HCaptcha from '$lib/components/HCaptcha.svelte';
 	import SelectInput from "$lib/components/SelectInput.svelte";
-	import {BriefcaseIcon, MapPinIcon} from "lucide-svelte";
+	import {BriefcaseIcon, MapPinIcon, Clock2Icon} from "lucide-svelte";
 
 	export let data: {
 		jobs: DBJob[];
@@ -96,6 +96,12 @@
 	function updateSelectedJob(e: CustomEvent) {
 		const id = e.detail.value;
 		selectedJob = data.jobs.find((job) => job.id === id);
+
+		if (!selectedJob) {
+			jobLocations = [];
+			return;
+		}
+
 		jobLocations = selectedJob.expand.locations.map((loc) => ({ id: loc.id, value: loc.location }));
 	}
 
@@ -206,7 +212,7 @@
 								{ id: 'false', value: 'Part time' }
 							]} placeholder="Search office locations">
 						<div slot="before" class="mr-2.5">
-							<MapPinIcon class="w-[20px] h-[20px] aspect-square text-surface-6" />
+							<Clock2Icon class="w-[20px] h-[20px] aspect-square text-surface-6" />
 						</div>
 					</SelectInput>
 					<PageButtons {onSubmit} page={1} bind:submitting on:backward={() => backward} />

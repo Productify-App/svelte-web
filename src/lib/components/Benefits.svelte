@@ -1,6 +1,15 @@
 <script lang="ts">
 	import Saos from 'saos';
-	import { type Icon, Laptop, PalmtreeIcon } from 'lucide-svelte';
+	import {
+		CircleDollarSignIcon,
+		Clock1Icon,
+		GraduationCapIcon, HandHeartIcon,
+		HandshakeIcon,
+		type Icon,
+		Laptop,
+		PalmtreeIcon,
+		ScaleIcon
+	} from 'lucide-svelte';
 	import type { ComponentType } from 'svelte';
 	export let theme: 'primary' | 'accent' = 'accent';
 	let className = '';
@@ -13,40 +22,40 @@
 		icon: ComponentType<Icon>;
 	} = [
 		{
-			title: "We're a remote-first company",
+			title: "Flexible Work Schedule",
 			description:
-				"We believe in the power of remote work. We're a remote-first company, and we believe that you should be able to work from anywhere in the world.",
-			icon: Laptop
+				"At Productify. we champion flexibility. Your schedule, your way. Strike the perfect balance between work and life. Join us and embrace a culture that values your time.",
+			icon: Clock1Icon
 		},
 		{
-			title: 'Paid leave',
+			title: 'Equity Potential',
 			description:
-				'We all need a break from time to time. We offer paid leave to all of our employees, so you can take the time you need to recharge and come back refreshed.',
-			icon: PalmtreeIcon
+				'Exceptional contributions, tangible rewards. Earn equity at Productify—a unique opportunity for select team members. Join us, excel, and shape our success story together.',
+			icon: ScaleIcon
 		},
 		{
-			title: "We're a remote-first company",
+			title: "Growth Opportunities",
 			description:
-				"We believe in the power of remote work. We're a remote-first company, and we believe that you should be able to work from anywhere in the world.",
-			icon: Laptop
+				"At Productify, we invest in your potential. Access workshops, training, and development programs to enhance your skills. Join us, embrace continuous learning, and propel your career forward.",
+			icon: GraduationCapIcon
 		},
 		{
-			title: 'Paid leave',
+			title: 'Paid Leave',
 			description:
-				'We all need a break from time to time. We offer paid leave to all of our employees, so you can take the time you need to recharge and come back refreshed.',
-			icon: PalmtreeIcon
+				'We offer generous PTO for rest and personal matters, and paid VTO for volunteer efforts. We value your well-being and satisfaction, and believe in giving back to the community.',
+			icon: CircleDollarSignIcon
 		},
 		{
-			title: "We're a remote-first company",
+			title: "Collaborative Atmosphere",
 			description:
-				"We believe in the power of remote work. We're a remote-first company, and we believe that you should be able to work from anywhere in the world.",
-			icon: Laptop
+				"Our culture values open communication and teamwork. Experience a positive and inclusive environment where your ideas thrive.",
+			icon: HandshakeIcon
 		},
 		{
-			title: 'Paid leave',
+			title: 'Health and Wellness',
 			description:
-				'We all need a break from time to time. We offer paid leave to all of our employees, so you can take the time you need to recharge and come back refreshed.',
-			icon: PalmtreeIcon
+				'Enjoy health coverage, mental health resources, and more. Join us for a holistic approach to your professional and personal vitality. Your success begins with a healthy foundation.\n',
+			icon: HandHeartIcon
 		}
 	];
 </script>

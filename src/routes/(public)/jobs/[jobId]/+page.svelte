@@ -1,16 +1,17 @@
 <script lang="ts">
 	import { type Job } from '$lib/types';
 	import { onMount } from 'svelte';
-	import { ArrowRight, CornerDownRight } from 'lucide-svelte';
+	import {ArrowLeft, ArrowRight, CornerDownRight} from 'lucide-svelte';
 
 	import Divider from '$lib/components/Divider.svelte';
 	import Footer from '$lib/components/Footer.svelte';
 	import Button from '$lib/components/Button.svelte';
 	import Saos from 'saos';
+	import type {DBJob} from "$lib/types.js";
 
 	export let data: {
-		job: Job;
-	};
+		job: DBJob;
+	} = { job: null };
 
 	onMount(() => {
 		console.log(data.job);
@@ -38,7 +39,7 @@
 					{data.job.title}
 				</h1>
 				<h1 class="text-lg font-bold z-30 text-primary-2 mx-auto w-full">
-					{data.job.locations.join(' OR ').toUpperCase()}
+					{data.job.expand.locations.map((loc) => loc.location).join(' OR ').toUpperCase()}
 				</h1>
 			</div>
 		</div>
@@ -56,7 +57,7 @@
 	</section>
 	<section class="max-w-screen-md mx-auto px-8 py-10 mb-[17vh]">
 		<div class="flex gap-2 mb-8">
-			{#each data.job.tags as tag}
+			{#each data.job.expand.tags.map((tag) => tag.tag) as tag}
 				<div class="px-4 py-2 bg-surface-5 rounded-full">
 					<p class="text-white">{tag}</p>
 				</div>
@@ -65,17 +66,17 @@
 		<Divider />
 		<h1 class="text-xl font-semibold text-surface-9 mt-8">Description</h1>
 		<p class="text-surface-7 mt-4 mb-8">
-			{data.job.overview}
+			{data.job.info.overview}
 		</p>
 		<Divider />
 		<h1 class="text-xl font-semibold text-surface-9 mt-8">Expectations</h1>
 		<p class="text-surface-7 mt-4 mb-8">
-			{data.job.expectations}
+			{data.job.info.expectations}
 		</p>
 		<Divider />
 		<h1 class="text-xl font-semibold text-surface-9 mt-8">What we're looking for</h1>
 		<ul class="space-y-2 mt-4 mb-8">
-			{#each data.job.requirements as requirement, i}
+			{#each data.job.info.requirements as requirement, i}
 				<Saos once={true} animation={`slide-in 1s cubic-bezier(0.55, 0, 0.1, 1) both ${i * 0.1}s`}>
 					<li class="text-surface-7 flex gap-2 ml-2">
 						<p class="inline-block select-none">
@@ -94,7 +95,11 @@
 					arrowRight={ArrowRight}
 					class="mx-auto w-min"
 					size="lg"
-					link={'/apply?i=' + data.job.id}
+					redirectOptions={{
+						replaceState: true,
+						invalidateAll: true
+					}}
+					link={'/apply?id=' + data.job.id}
 				/>
 			</Saos>
 		</div>

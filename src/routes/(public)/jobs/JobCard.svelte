@@ -3,7 +3,15 @@
 
 	import { fade } from 'svelte/transition';
 	import Button from '$lib/components/Button.svelte';
-	export let info: job;
+	import type {DBJob} from "$lib/types";
+	export let info: DBJob;
+
+	const redirectOptions = {
+		noScroll: false
+	}
+
+	let locations = info.expand.locations.map((i) => i.location);
+	let tags = info.expand.tags.map((i) => i.tag);
 </script>
 
 <div
@@ -12,10 +20,10 @@
 >
 	<h5 class="text-4xl font-bold text-surface-10 whitespace-nowrap">{info.title}</h5>
 	<p class="text-surface-8 mt-4">
-		{info.tags.map((i) => i.substring(0, 1).toUpperCase() + i.substring(1)).join(' • ')}
+		{tags.map((i) => i.substring(0, 1).toUpperCase() + i.substring(1)).join(' • ')}
 	</p>
 	<div class="flex items-center mt-4 gap-4">
-		<Button label="Learn more" color="surface" link={`/jobs/${info.id}#top`} />
-		<p class="text-surface-6 text-sm">{info.locations.join(' or ')}</p>
+		<Button redirectOptions={redirectOptions} label="Learn more" color="surface" link={`/jobs/${info.id}`} />
+		<p class="text-surface-6 text-sm">{locations.join(' or ')}</p>
 	</div>
 </div>
