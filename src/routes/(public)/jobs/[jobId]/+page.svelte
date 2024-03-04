@@ -1,11 +1,12 @@
 <script lang="ts">
 	import { type Job } from '$lib/types';
 	import { onMount } from 'svelte';
-	import { ArrowLeft, ArrowRight, CornerDownRight } from 'lucide-svelte';
+	import { ArrowLeft, ArrowRight, CheckIcon } from 'lucide-svelte';
 
 	import Divider from '$lib/components/Divider.svelte';
 	import Footer from '$lib/components/Footer.svelte';
 	import Button from '$lib/components/Button.svelte';
+	import Section from './Section.svelte';
 	import Saos from 'saos';
 	import type { DBJob } from '$lib/types.js';
 
@@ -61,29 +62,23 @@
 	<section class="max-w-screen-md mx-auto px-8 py-10 mb-[17vh]">
 		<div class="flex gap-2 mb-8">
 			{#each data.job.expand.tags.map((tag) => tag.tag) as tag}
-				<div class="px-4 py-2 bg-surface-5 rounded-full">
-					<p class="text-white">{tag}</p>
+				<div class="px-4 py-2 border-2 border-surface-5 rounded-full">
+					<p class="text-surface-6">{tag}</p>
 				</div>
 			{/each}
 		</div>
 		<Divider />
-		<h1 class="text-xl font-semibold text-surface-9 mt-8">Description</h1>
-		<p class="text-surface-7 mt-4 mb-8">
-			{data.job.info.overview}
-		</p>
+		<Section title="Overview" content={data.job.info.overview} />
 		<Divider />
-		<h1 class="text-xl font-semibold text-surface-9 mt-8">Expectations</h1>
-		<p class="text-surface-7 mt-4 mb-8">
-			{data.job.info.expectations}
-		</p>
+		<Section title="Expectations" content={data.job.info.expectations} />
 		<Divider />
 		<h1 class="text-xl font-semibold text-surface-9 mt-8">What we're looking for</h1>
 		<ul class="space-y-2 mt-4 mb-8">
 			{#each data.job.info.requirements as requirement, i}
-				<Saos once={true} animation={`slide-in 1s cubic-bezier(0.55, 0, 0.1, 1) both ${i * 0.1}s`}>
+				<Saos once={true} animation={`slide-in 1s cubic-bezier(0.55, 0, 0.1, 1) both`}>
 					<li class="text-surface-7 flex gap-2 ml-2">
 						<p class="inline-block select-none">
-							<CornerDownRight class="text-accent-5 -translate-y-0.5" />
+							<CheckIcon class="text-accent-5" />
 						</p>
 						<p class="inline-block">{requirement}</p>
 					</li>
@@ -91,13 +86,21 @@
 			{/each}
 		</ul>
 		<Divider />
-		<h1 class="text-xl font-semibold text-surface-9 mt-8">Expectations</h1>
-		<p class="text-surface-7 mt-4 mb-8">
-			{data.job.info?.salary ??
-				'Estimate: $50,000 \n\nThis includes base salary and may also include performance-based bonuses.'}
-		</p>
+		<h1 class="text-xl font-semibold text-surface-9 mt-8">Salary</h1>
+		<ul class="space-y-2 mt-4 mb-8">
+			{#each data.job.info.salary as salaryPt, i}
+				<Saos once={true} animation={`slide-in 1s cubic-bezier(0.55, 0, 0.1, 1) both`}>
+					<li class="text-surface-7 flex gap-2 ml-2">
+						<p class="inline-block select-none">
+							<CheckIcon class="text-accent-5" />
+						</p>
+						<p class="inline-block">{salaryPt}</p>
+					</li>
+				</Saos>
+			{/each}
+		</ul>
 		<div class="w-full">
-			<Saos once={true} animation={'slide-up-small 1s cubic-bezier(0.55, 0, 0.1, 1) both 0.3s'}>
+			<Saos once={true} animation={'slide-up-small 1s cubic-bezier(0.55, 0, 0.1, 1) both'}>
 				<Button
 					label="Apply for this position"
 					color="accent"
